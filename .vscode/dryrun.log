@@ -1,0 +1,11 @@
+make --dry-run --always-make --keep-going --print-directory
+make: Entering directory `/Users/mar/Desktop/FallingSandSimV2'
+g++ -c -o Vector3.o Vector3.cpp -O3 -g -Wdeprecated-declarations -Wno-deprecated
+g++ -c -o particle.o particle.cpp -O3 -g -Wdeprecated-declarations -Wno-deprecated
+g++ -c -o main.o main.cpp -O3 -g -Wdeprecated-declarations -Wno-deprecated
+g++ -c -o screen.o screen.cpp -O3 -g -Wdeprecated-declarations -Wno-deprecated
+g++ -c -o ParticleSystem.o ParticleSystem.cpp -O3 -g -Wdeprecated-declarations -Wno-deprecated
+g++ -c -o HUD.o HUD.cpp -O3 -g -Wdeprecated-declarations -Wno-deprecated
+g++ -o particles Vector3.o particle.o main.o screen.o ParticleSystem.o HUD.o -O3 -g -Wdeprecated-declarations -Wno-deprecated -framework GLUT -framework OpenGL
+make: Leaving directory `/Users/mar/Desktop/FallingSandSimV2'
+ 
