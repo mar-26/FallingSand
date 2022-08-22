@@ -1,11 +1,12 @@
 make --dry-run --always-make --keep-going --print-directory
-make: Entering directory `/Users/mar/Desktop/FallingSandSimV2'
-g++ -c -o Vector3.o Vector3.cpp -O3 -g -Wdeprecated-declarations -Wno-deprecated
-g++ -c -o particle.o particle.cpp -O3 -g -Wdeprecated-declarations -Wno-deprecated
-g++ -c -o main.o main.cpp -O3 -g -Wdeprecated-declarations -Wno-deprecated
-g++ -c -o screen.o screen.cpp -O3 -g -Wdeprecated-declarations -Wno-deprecated
-g++ -c -o ParticleSystem.o ParticleSystem.cpp -O3 -g -Wdeprecated-declarations -Wno-deprecated
-g++ -c -o HUD.o HUD.cpp -O3 -g -Wdeprecated-declarations -Wno-deprecated
-g++ -o particles Vector3.o particle.o main.o screen.o ParticleSystem.o HUD.o -O3 -g -Wdeprecated-declarations -Wno-deprecated -framework GLUT -framework OpenGL
-make: Leaving directory `/Users/mar/Desktop/FallingSandSimV2'
+make: Entering directory `/Users/mar/Desktop/FallingSand'
+mkdir ./objs
+c++ -c -o objs/main.o src/main.cpp -O3 -Wdeprecated-declarations -Wno-deprecated -I./headers
+c++ -c -o objs/Vector3.o src/Vector3.cpp -O3 -Wdeprecated-declarations -Wno-deprecated -I./headers
+c++ -c -o objs/Particle.o src/Particle.cpp -O3 -Wdeprecated-declarations -Wno-deprecated -I./headers
+c++ -c -o objs/Screen.o src/Screen.cpp -O3 -Wdeprecated-declarations -Wno-deprecated -I./headers
+c++ -c -o objs/ParticleSystem.o src/ParticleSystem.cpp -O3 -Wdeprecated-declarations -Wno-deprecated -I./headers
+c++ -c -o objs/HUD.o src/HUD.cpp -O3 -Wdeprecated-declarations -Wno-deprecated -I./headers
+c++ -o particles objs/main.o objs/Vector3.o objs/Particle.o objs/Screen.o objs/ParticleSystem.o objs/HUD.o -O3 -Wdeprecated-declarations -Wno-deprecated -I./headers -framework GLUT -framework OpenGL
+make: Leaving directory `/Users/mar/Desktop/FallingSand'
  
