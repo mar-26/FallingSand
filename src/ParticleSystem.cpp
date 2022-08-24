@@ -39,11 +39,19 @@ void ParticleSystem::update()
     {
         for (int j = 0; j < particles[i].size(); j++)
         {
-            particles[i][j]->move(screen);
+            if (particles[i][j]->getPosition().y > screen->getHeight() || particles[i][j]->getPosition().y < 0)
+            {
+                particles[i].erase(particles[i].begin()+j);
+            }
+            else
+            {
+                particles[i][j]->update(screen);
+            }
         }
     }
-    sortVector();
+    //sortVector();
     screen->update();
+    notifyObservers();
 }
 
 void ParticleSystem::keyPressed(unsigned char key)
@@ -192,7 +200,6 @@ void ParticleSystem::addParticle(int x, int y)
                         screen->placeColor(x-j, y-i, Fire().getColor());
                     }
                 }
-                eraseParticle(x-j, y-i);
             }
         }
     }
@@ -249,6 +256,10 @@ void ParticleSystem::sortVector()
     {
         for (j = 0; j < particles[i].size(); i++)
         {
+            if (particles[i][j] == NULL)
+            {
+                particles[i].erase(particles[i].begin()+j);
+            }
             if (particles[i][j]->getPosition().y != i)
             {
                 particles[particles[i][j]->getPosition().y].push_back(particles[i][j]);

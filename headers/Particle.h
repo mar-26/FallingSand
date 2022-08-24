@@ -1,8 +1,11 @@
 #ifndef PARTICLE_H
 #define PARTICLE_H
 
+#include <vector>
+
 #include "Color.h"
 #include "Vector3.h"
+#include "Behavior.h"
 
 class Particle
 {
@@ -10,18 +13,21 @@ class Particle
         Vector3 position;
         Vector3 velocity;
         Color color;
+        std::vector<Behavior*> behaviors;
 
     public:
         Particle();
         Particle(Vector3, Vector3, Color);
 
-        virtual void move(void*) = 0;
-        void update();
+        void update(void*);
 
         void setPosition(Vector3);
         void setVelocity(Vector3);
         void setColor(Color);
+        void addBehavior(Behavior*);
+        void removeBehavior(Behavior*);
 
+        std::vector<Behavior*> getBehaviors();
         Vector3 getPosition();
         Vector3 getVelocity();
         Color getColor();
@@ -32,9 +38,8 @@ class Sand : public Particle
 {
     public:
         Sand() : Particle(Vector3(0, 0, 0), Vector3(0, 0, 0), Color(0.9, 0.8, 0.4)){}
-        Sand(int x, int y) : Particle(Vector3(x, y, 0), Vector3(0, 0, 0), Color(0.9, 0.8, 0.4)){}
-
-        virtual void move(void*);
+        Sand(int x, int y) : Particle(Vector3(x, y, 0), Vector3(0, 0, 0), Color(0.9, 0.8, 0.4))
+            { addBehavior(new Fall()); }
 };
 
 class Wall : public Particle
@@ -42,8 +47,6 @@ class Wall : public Particle
     public:
         Wall() : Particle(Vector3(0, 0, 0), Vector3(0, 0, 0), Color(0.6, 0.6, 0.7)){}
         Wall(int x, int y) : Particle(Vector3(x, y, 0), Vector3(0, 0, 0), Color(0.6, 0.6, 0.7)){}
-
-        virtual void move(void*);
 };
 
 class Erase : public Particle
@@ -51,35 +54,30 @@ class Erase : public Particle
     public:
         Erase() : Particle(Vector3(0, 0, 0), Vector3(0, 0, 0), Color(0, 0, 0)){}
         Erase(int x, int y) : Particle(Vector3(x, y, 0), Vector3(0, 0, 0), Color(0, 0, 0)){}
-
-        virtual void move(void*);
 };
 
 class Water : public Particle
 {
     public:
         Water() : Particle(Vector3(0, 0, 0), Vector3(0, 0, 0), Color(0.3, 0.4, 1)){}
-        Water(int x, int y) : Particle(Vector3(x, y, 0), Vector3(0, 0, 0), Color(0.3, 0.4, 1)){}
-
-        virtual void move(void*);
+        Water(int x, int y) : Particle(Vector3(x, y, 0), Vector3(0, 0, 0), Color(0.3, 0.4, 1))
+            { addBehavior(new Liquid()); }
 };
 
 class Gas : public Particle
 {
     public:
         Gas() : Particle(Vector3(0, 0, 0), Vector3(0, 0, 0), Color(0, 0.6, 0.1)){}
-        Gas(int x, int y) : Particle(Vector3(x, y, 0), Vector3(0, 0, 0), Color(0, 0.6, 0.1)){}
-
-        virtual void move(void*);
+        Gas(int x, int y) : Particle(Vector3(x, y, 0), Vector3(0, 0, 0), Color(0, 0.6, 0.1))
+            { addBehavior(new Rise(false)); }
 };
 
 class Soil : public Particle
 {
     public:
         Soil() : Particle(Vector3(0, 0, 0), Vector3(0, 0, 0), Color(0.4, 0.2, 0)){}
-        Soil(int x, int y) : Particle(Vector3(x, y, 0), Vector3(0, 0, 0), Color(0.4, 0.2, 0)){}
-
-        virtual void move(void*);
+        Soil(int x, int y) : Particle(Vector3(x, y, 0), Vector3(0, 0, 0), Color(0.4, 0.2, 0))
+            { addBehavior(new Fall()); }
 };
 
 class Fire : public Particle
@@ -87,19 +85,16 @@ class Fire : public Particle
     public:
         Fire() : Particle(Vector3(0, 0, 0), Vector3(0, 0, 0), Color(0.9, 0, 0.1)){}
         Fire(int x, int y) : Particle(Vector3(x, y, 0), Vector3(0, 0, 0), Color(0.9, 0, 0.1)){}
-
-        virtual void move(void*);
 };
 
 class Plant : public Particle
 {
-    private:
-        int moves;
     public:
-        Plant() : Particle(Vector3(0, 0, 0), Vector3(0, 0, 0), Color(0, 0.9, 0.2)), moves(0){}
-        Plant(int x, int y) : Particle(Vector3(x, y, 0), Vector3(0, 0, 0), Color(0, 0.9, 0.2)), moves(0){}
-
-        virtual void move(void*);
+        Plant() : Particle(Vector3(0, 0, 0), Vector3(0, 0, 0), Color(0, 0.9, 0.2)){}
+        Plant(int x, int y) : Particle(Vector3(x, y, 0), Vector3(0, 0, 0), Color(0, 0.9, 0.2))
+            { addBehavior(new Grow());
+              addBehavior(new Burn());
+            }
 };
 
 #endif

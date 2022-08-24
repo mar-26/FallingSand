@@ -6,16 +6,14 @@ PLATFORM := $(shell uname)
 
 ifeq ($(PLATFORM),Darwin)
 	LIBS = -framework GLUT -framework OpenGL
-	FLAGS = -O3 -Wdeprecated-declarations -Wno-deprecated -I$(IDIR)
+	FLAGS = -O3 -g -Wdeprecated-declarations -Wno-deprecated -I$(IDIR)
 else
 	LIBS = -lGL -lGLU -lglut
 	FLAGS = -O3 -g -I$(IDIR)
 endif
 
-DEPS = Vector3.h Particle.h Screen.h ParticleSystem.h HUD.h
-
-SRCS = $(addprefix $(SRCDIR)/, main.cpp Vector3.cpp Particle.cpp Screen.cpp ParticleSystem.cpp HUD.cpp)
-OBJS = $(addprefix $(OBJDIR)/, main.o Vector3.o Particle.o Screen.o ParticleSystem.o HUD.o)
+SRCS = $(addprefix $(SRCDIR)/, main.cpp Vector3.cpp Particle.cpp Screen.cpp ParticleSystem.cpp HUD.cpp Behavior.cpp)
+OBJS = $(addprefix $(OBJDIR)/, main.o Vector3.o Particle.o Screen.o ParticleSystem.o HUD.o Behavior.o)
 
 PRODUCTS = particles
 

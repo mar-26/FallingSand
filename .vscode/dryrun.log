@@ -1,12 +1,13 @@
 make --dry-run --always-make --keep-going --print-directory
 make: Entering directory `/Users/mar/Desktop/FallingSand'
 mkdir ./objs
-c++ -c -o objs/main.o src/main.cpp -O3 -Wdeprecated-declarations -Wno-deprecated -I./headers
-c++ -c -o objs/Vector3.o src/Vector3.cpp -O3 -Wdeprecated-declarations -Wno-deprecated -I./headers
-c++ -c -o objs/Particle.o src/Particle.cpp -O3 -Wdeprecated-declarations -Wno-deprecated -I./headers
-c++ -c -o objs/Screen.o src/Screen.cpp -O3 -Wdeprecated-declarations -Wno-deprecated -I./headers
-c++ -c -o objs/ParticleSystem.o src/ParticleSystem.cpp -O3 -Wdeprecated-declarations -Wno-deprecated -I./headers
-c++ -c -o objs/HUD.o src/HUD.cpp -O3 -Wdeprecated-declarations -Wno-deprecated -I./headers
-c++ -o particles objs/main.o objs/Vector3.o objs/Particle.o objs/Screen.o objs/ParticleSystem.o objs/HUD.o -O3 -Wdeprecated-declarations -Wno-deprecated -I./headers -framework GLUT -framework OpenGL
+c++ -c -o objs/main.o src/main.cpp -O3 -g -Wdeprecated-declarations -Wno-deprecated -I./headers
+c++ -c -o objs/Vector3.o src/Vector3.cpp -O3 -g -Wdeprecated-declarations -Wno-deprecated -I./headers
+c++ -c -o objs/Particle.o src/Particle.cpp -O3 -g -Wdeprecated-declarations -Wno-deprecated -I./headers
+c++ -c -o objs/Screen.o src/Screen.cpp -O3 -g -Wdeprecated-declarations -Wno-deprecated -I./headers
+c++ -c -o objs/ParticleSystem.o src/ParticleSystem.cpp -O3 -g -Wdeprecated-declarations -Wno-deprecated -I./headers
+c++ -c -o objs/HUD.o src/HUD.cpp -O3 -g -Wdeprecated-declarations -Wno-deprecated -I./headers
+c++ -c -o objs/Behavior.o src/Behavior.cpp -O3 -g -Wdeprecated-declarations -Wno-deprecated -I./headers
+c++ -o particles objs/main.o objs/Vector3.o objs/Particle.o objs/Screen.o objs/ParticleSystem.o objs/HUD.o objs/Behavior.o -O3 -g -Wdeprecated-declarations -Wno-deprecated -I./headers -framework GLUT -framework OpenGL
 make: Leaving directory `/Users/mar/Desktop/FallingSand'
  
