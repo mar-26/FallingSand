@@ -1,6 +1,4 @@
 #include "Particle.h"
-#include "Screen.h"
-#include "ParticleSystem.h"
 
 #ifdef __APPLE__
 #include <OpenGL/gl.h>

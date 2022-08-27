@@ -1,20 +1,20 @@
 #include "Behavior.h"
 #include "Particle.h"
-#include "Screen.h"
+#include "ParticleSystem.h"
 
 void Fall::update(void *s, void *p)
 {
     Particle *particle = static_cast<Particle*>(p);
-    Screen *screen = static_cast<Screen*>(s);
+    ParticleSystem *ps = static_cast<ParticleSystem*>(s);
 
     int px = particle->getPosition().x;
     int py = particle->getPosition().y;
 
-    bool down = screen->isEmpty(px, py+1);
-    bool left = screen->isEmpty(px-1, py+1);
-    bool right = screen->isEmpty(px+1, py+1);
+    bool down = ps->isEmpty(px, py+1);
+    bool left = ps->isEmpty(px-1, py+1);
+    bool right = ps->isEmpty(px+1, py+1);
 
-    if (down)
+    if (down || ps->getColor(px, py+1) == Water().getColor())
     {
         particle->setPosition(Vector3(px, py+1, 0));
     }
@@ -45,16 +45,16 @@ void Fall::update(void *s, void *p)
 void Rise::update(void *s, void *p)
 {
     Particle *particle = static_cast<Particle*>(p);
-    Screen *screen = static_cast<Screen*>(s);
+    ParticleSystem *ps = static_cast<ParticleSystem*>(s);
 
     int px = particle->getPosition().x;
     int py = particle->getPosition().y;
 
-    bool up = screen->isEmpty(px, py-1);
-    bool leftUp = screen->isEmpty(px-1, py-1);
-    bool rightUp = screen->isEmpty(px+1, py-1);
-    bool left = screen->isEmpty(px-1, py);
-    bool right = screen->isEmpty(px+1, py);
+    bool up = ps->isEmpty(px, py-1);
+    bool leftUp = ps->isEmpty(px-1, py-1);
+    bool rightUp = ps->isEmpty(px+1, py-1);
+    bool left = ps->isEmpty(px-1, py);
+    bool right = ps->isEmpty(px+1, py);
 
     if (passive)
     {
@@ -110,7 +110,7 @@ void Grow::update(void *s, void *p)
 {
     height++;
     Particle *particle = static_cast<Particle*>(p);
-    Screen *screen = static_cast<Screen*>(s);
+    ParticleSystem *ps = static_cast<ParticleSystem*>(s);
 
     int px = particle->getPosition().x;
     int py = particle->getPosition().y;
@@ -122,15 +122,15 @@ void Grow::update(void *s, void *p)
         // this way plants can grow though the dirt
         for (int i = 0; i < 10; i++)
         {
-            if (screen->isEmpty(px, py-i))
+            if (ps->isEmpty(px, py-i))
             {
                 up = true;
             }
         }
-        bool leftUp = screen->isEmpty(px-1, py-1);
-        bool rightUp = screen->isEmpty(px+1, py-1);
-        bool left = screen->isEmpty(px-1, py);
-        bool right = screen->isEmpty(px+1, py);
+        bool leftUp = ps->isEmpty(px-1, py-1);
+        bool rightUp = ps->isEmpty(px+1, py-1);
+        bool left = ps->isEmpty(px-1, py);
+        bool right = ps->isEmpty(px+1, py);
 
         int r = rand()%3;
         if (up && r == 0)
@@ -167,14 +167,14 @@ void Grow::update(void *s, void *p)
 void Liquid::update(void *s, void *p)
 {
     Particle *particle = static_cast<Particle*>(p);
-    Screen *screen = static_cast<Screen*>(s);
+    ParticleSystem *ps = static_cast<ParticleSystem*>(s);
 
     int px = particle->getPosition().x;
     int py = particle->getPosition().y;
 
-    bool down = screen->isEmpty(px, py+1);
-    bool left = screen->isEmpty(px-1, py);
-    bool right = screen->isEmpty(px+1, py);
+    bool down = ps->isEmpty(px, py+1);
+    bool left = ps->isEmpty(px-1, py);
+    bool right = ps->isEmpty(px+1, py);
 
     if (down)
     {
@@ -201,20 +201,20 @@ void Liquid::update(void *s, void *p)
 void Burn::update(void *s, void *p)
 {
     Particle *particle = static_cast<Particle*>(p);
-    Screen *screen = static_cast<Screen*>(s);
+    ParticleSystem *ps = static_cast<ParticleSystem*>(s);
 
     int px = particle->getPosition().x;
     int py = particle->getPosition().y;
 
     Color f = Fire().getColor();
-    bool nearFire = (screen->getColor(px-1, py+1) == f) || 
-                    (screen->getColor(px-1, py) == f) || 
-                    (screen->getColor(px-1, py-1) == f) || 
-                    (screen->getColor(px, py-1) == f) || 
-                    (screen->getColor(px+1, py-1) == f) || 
-                    (screen->getColor(px+1, py) == f) || 
-                    (screen->getColor(px+1, py+1) == f) || 
-                    (screen->getColor(px, py+1) == f) ? true : false;
+    bool nearFire = (ps->getColor(px-1, py+1) == f) || 
+                    (ps->getColor(px-1, py) == f) || 
+                    (ps->getColor(px-1, py-1) == f) || 
+                    (ps->getColor(px, py-1) == f) || 
+                    (ps->getColor(px+1, py-1) == f) || 
+                    (ps->getColor(px+1, py) == f) || 
+                    (ps->getColor(px+1, py+1) == f) ||
+                    (ps->getColor(px, py+1) == f) ? true : false;
     
     if (nearFire)
     {
@@ -227,14 +227,32 @@ void Burn::update(void *s, void *p)
     if (halfLife > rand()%100)
     {
         particle->setColor(Color(0.7, 0.7, 0.8));
-        int r = rand()%10;
-        if (r == 0)
-        {
-            particle->addBehavior(new Fall());
-        }
-        else
-        {
-            particle->addBehavior(new Rise(true));
-        }
+        particle->addBehavior(new Rise(true));
+    }
+}
+
+void Melt::update(void *s, void *p)
+{
+    Particle *particle = static_cast<Particle*>(p);
+    ParticleSystem *ps = static_cast<ParticleSystem*>(s);
+
+    int px = particle->getPosition().x;
+    int py = particle->getPosition().y;
+
+    Color f = Fire().getColor();
+    bool nearFire = (ps->getColor(px-1, py+1) == f) || 
+                    (ps->getColor(px-1, py) == f) || 
+                    (ps->getColor(px-1, py-1) == f) || 
+                    (ps->getColor(px, py-1) == f) || 
+                    (ps->getColor(px+1, py-1) == f) || 
+                    (ps->getColor(px+1, py) == f) || 
+                    (ps->getColor(px+1, py+1) == f) ||
+                    (ps->getColor(px, py+1) == f) ? true : false;
+
+    if (nearFire)
+    {
+        particle->setColor(Water().getColor());
+        particle->addBehavior(new Liquid());
+        particle->removeBehavior(this);
     }
 }

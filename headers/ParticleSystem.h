@@ -21,6 +21,7 @@ class ParticleSystem : public Subject
         ParticleSystem();
         ParticleSystem(int, int);
         ~ParticleSystem();
+
         void draw();
         void update();
         void addParticle(int, int);
@@ -28,9 +29,15 @@ class ParticleSystem : public Subject
         void keyPressed(int);
         void keyPressed(unsigned char);
         void sortVector();
+        void placeColor(int, int, Color);
+
+        bool isEmpty(int, int);
+        Color getColor(int, int);
+
         std::string getElement();
         std::string getNumParticals();
         std::string getBrushSize();
+
 		virtual void registerObserver(Observer*);
 		virtual void removeObserver(Observer*);
 		virtual void notifyObservers();

@@ -48,4 +48,11 @@ class Burn : public Behavior
         virtual void update(void*, void*);
 };
 
+class Melt : public Behavior
+{
+    public:
+        Melt(){}
+        virtual void update(void*, void*);
+};
+
 #endif

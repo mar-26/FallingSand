@@ -45,7 +45,7 @@ void ParticleSystem::update()
             }
             else
             {
-                particles[i][j]->update(screen);
+                particles[i][j]->update(this);
             }
         }
     }
@@ -81,6 +81,9 @@ void ParticleSystem::keyPressed(unsigned char key)
             break;
         case 'p':
             element = "Plant";
+            break;
+        case 'i':
+            element = "Ice";
             break;
         default:
             element = "Sand";
@@ -217,6 +220,16 @@ void ParticleSystem::addParticle(int x, int y)
             }
         }
     }
+    else if (element == "Ice")
+    {
+        for (int i = 0; i < brushSize; i++)
+        {
+            for (int j = 0; j < brushSize; j++)
+            {
+                particles[y+i].push_back(new Ice(x-j, y-i));
+            }
+        }
+    }
     else
     {
         particles[y].push_back(new Sand(x, y));
@@ -267,6 +280,21 @@ void ParticleSystem::sortVector()
             }
         }
     }
+}
+
+void ParticleSystem::placeColor(int x, int y, Color c)
+{
+    screen->placeColor(x, y, c);
+}
+
+bool ParticleSystem::isEmpty(int x, int y)
+{
+    return screen->isEmpty(x, y);
+}
+
+Color ParticleSystem::getColor(int x, int y)
+{
+    return screen->getColor(x, y);
 }
 
 std::string ParticleSystem::getNumParticals()

@@ -15,7 +15,7 @@ endif
 SRCS = $(addprefix $(SRCDIR)/, main.cpp Vector3.cpp Particle.cpp Screen.cpp ParticleSystem.cpp HUD.cpp Behavior.cpp)
 OBJS = $(addprefix $(OBJDIR)/, main.o Vector3.o Particle.o Screen.o ParticleSystem.o HUD.o Behavior.o)
 
-PRODUCTS = particles
+PRODUCTS = fallingSand
 
 $(OBJDIR)/%.o : $(SRCDIR)/%.cpp
 	$(CXX) -c -o $@ $< $(FLAGS)
