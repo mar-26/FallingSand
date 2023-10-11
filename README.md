@@ -2,7 +2,7 @@
 
 A falling sand simulator built on macOS with a couple of elements and interactions.
 
-Press 's' for sand
+Press 's' for sand\n
 Press 'S' for soil
 Press 'w' for water
 Press 'c' for concrete
